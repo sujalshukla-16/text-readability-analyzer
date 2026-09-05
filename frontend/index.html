@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Text Readability Analyzer</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Theme Toggle -->
+    <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
+        <span id="themeIcon">🌙</span>
+    </button>
+
+
+    <main class="container">
+
+        <!-- =====================================
+             HERO
+             ===================================== -->
+
+        <section class="hero">
+
+            <div class="hero-badge">
+                NLP • Readability Analysis
+            </div>
+
+            <h1>
+                Text Readability Analyzer
+            </h1>
+
+            <p>
+                Analyze your text and find out how easy it is to read.
+            </p>
+
+        </section>
+
+
+        <!-- =====================================
+             INPUT SECTION
+             ===================================== -->
+
+        <section class="input-section">
+
+            <div class="input-header">
+
+                <div>
+                    <label for="textInput">
+                        Enter your text
+                    </label>
+
+                    <p class="input-hint">
+                        Enter a sentence or paragraph to analyze its readability.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <textarea id="textInput" placeholder="Paste or type your sentence or paragraph here..."
+                spellcheck="true"></textarea>
+
+
+            <div class="input-footer">
+
+                <span id="wordCount">
+                    0 words
+                </span>
+
+
+                <div class="button-group">
+
+                    <button id="clearButton" class="clear-button" type="button">
+                        Clear
+                    </button>
+
+                    <button id="analyzeButton" class="analyze-button" type="button">
+                        <span id="analyzeText">
+                            Analyze Text
+                        </span>
+
+                        <span id="loadingSpinner" class="spinner hidden"></span>
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================
+             ERROR
+             ===================================== -->
+
+        <div id="errorMessage" class="error hidden"></div>
+
+
+        <!-- =====================================
+             RESULTS
+             ===================================== -->
+
+        <section id="results" class="results hidden">
+
+
+            <!-- Overall Result -->
+
+            <div id="resultHeader" class="result-header">
+
+                <p>
+                    Overall Readability
+                </p>
+
+                <h2 id="finalReadability">
+                    Easy
+                </h2>
+
+                <div id="resultDescription" class="result-description">
+                    Your text is easy to read.
+                </div>
+
+                <div id="ensembleSummary" class="ensemble-summary">
+                    Based on all three readability metrics
+                </div>
+
+            </div>
+
+
+            <!-- Main Metrics -->
+
+            <div class="metrics">
+
+
+                <div class="metric-card">
+
+                    <div class="metric-icon">
+                        F
+                    </div>
+
+                    <h3 id="fleschScore">
+                        -
+                    </h3>
+
+                    <p>
+                        Flesch Reading Ease
+                    </p>
+
+                    <small>
+                        Higher = easier
+                    </small>
+
+                </div>
+
+
+                <div class="metric-card">
+
+                    <div class="metric-icon">
+                        FK
+                    </div>
+
+                    <h3 id="fkglScore">
+                        -
+                    </h3>
+
+                    <p>
+                        Flesch-Kincaid Grade
+                    </p>
+
+                    <small>
+                        Lower = easier
+                    </small>
+
+                </div>
+
+
+                <div class="metric-card">
+
+                    <div class="metric-icon">
+                        CL
+                    </div>
+
+                    <h3 id="colemanScore">
+                        -
+                    </h3>
+
+                    <p>
+                        Coleman-Liau Index
+                    </p>
+
+                    <small>
+                        Lower = easier
+                    </small>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- Text Statistics -->
+
+            <div class="statistics">
+
+                <div class="section-title">
+
+                    <div>
+                        <h3>
+                            Text Statistics
+                        </h3>
+
+                        <p>
+                            Basic characteristics of the analyzed text
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="stats-grid">
+
+                    <div class="stat-item">
+
+                        <span>
+                            Sentences
+                        </span>
+
+                        <strong id="sentenceCount">
+                            -
+                        </strong>
+
+                    </div>
+
+
+                    <div class="stat-item">
+
+                        <span>
+                            Words
+                        </span>
+
+                        <strong id="resultWordCount">
+                            -
+                        </strong>
+
+                    </div>
+
+
+                    <div class="stat-item">
+
+                        <span>
+                            Syllables
+                        </span>
+
+                        <strong id="syllableCount">
+                            -
+                        </strong>
+
+                    </div>
+
+
+                    <div class="stat-item">
+
+                        <span>
+                            Avg. Sentence Length
+                        </span>
+
+                        <strong id="sentenceLength">
+                            -
+                        </strong>
+
+                    </div>
+
+
+                    <div class="stat-item">
+
+                        <span>
+                            Avg. Syllables / Word
+                        </span>
+
+                        <strong id="syllablesPerWord">
+                            -
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Metric Classifications -->
+
+            <div class="classifications">
+
+                <div class="section-title">
+
+                    <div>
+                        <h3>
+                            Metric Classifications
+                        </h3>
+
+                        <p>
+                            Individual results from each readability method
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="classification-list">
+
+
+                    <div class="classification-item">
+
+                        <div>
+
+                            <strong>
+                                Flesch Reading Ease
+                            </strong>
+
+                            <span>
+                                Reading ease score
+                            </span>
+
+                        </div>
+
+                        <b id="fleschClassification">
+                            -
+                        </b>
+
+                    </div>
+
+
+                    <div class="classification-item">
+
+                        <div>
+
+                            <strong>
+                                Flesch-Kincaid
+                            </strong>
+
+                            <span>
+                                Grade-level estimate
+                            </span>
+
+                        </div>
+
+                        <b id="fkglClassification">
+                            -
+                        </b>
+
+                    </div>
+
+
+                    <div class="classification-item">
+
+                        <div>
+
+                            <strong>
+                                Coleman-Liau
+                            </strong>
+
+                            <span>
+                                Text complexity estimate
+                            </span>
+
+                        </div>
+
+                        <b id="colemanClassification">
+                            -
+                        </b>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+            <!-- How It Works -->
+
+            <div class="method-section">
+
+                <div class="section-title">
+
+                    <div>
+                        <h3>
+                            How the result is calculated
+                        </h3>
+
+                        <p>
+                            The analyzer combines three standard readability metrics.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="method-grid">
+
+
+                    <div class="method-card">
+
+                        <span class="method-number">
+                            01
+                        </span>
+
+                        <h4>
+                            Flesch Reading Ease
+                        </h4>
+
+                        <p>
+                            Uses sentence length and syllables per word.
+                            A higher score generally indicates easier text.
+                        </p>
+
+                    </div>
+
+
+                    <div class="method-card">
+
+                        <span class="method-number">
+                            02
+                        </span>
+
+                        <h4>
+                            Flesch-Kincaid
+                        </h4>
+
+                        <p>
+                            Estimates the education grade level required
+                            to understand the text.
+                        </p>
+
+                    </div>
+
+
+                    <div class="method-card">
+
+                        <span class="method-number">
+                            03
+                        </span>
+
+                        <h4>
+                            Coleman-Liau
+                        </h4>
+
+                        <p>
+                            Uses average letters and sentences to estimate
+                            text complexity.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================
+             FOOTER
+             ===================================== -->
+
+        <footer>
+
+            <div class="footer-title">
+                Text Readability Analyzer
+            </div>
+
+            <p>
+                A simple NLP-based project for analyzing text readability.
+            </p>
+
+            <span>
+                Built using Python • Flask • NLTK
+                <br>
+                Developer - Sujal Virendra Shukla
+            </span>
+
+        </footer>
+
+    </main>
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
