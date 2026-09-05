@@ -1,6 +1,10 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import nltk
+import os
+
+nltk.data.path.append(os.path.expanduser("~/nltk_data"))
+nltk.data.path.append("/opt/render/nltk_data")
 
 app = Flask(__name__)
 CORS(app)
