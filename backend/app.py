@@ -3,8 +3,8 @@ from flask_cors import CORS
 import nltk
 import os
 
-nltk.data.path.append(os.path.expanduser("~/nltk_data"))
-nltk.data.path.append("/opt/render/nltk_data")
+NLTK_DATA_DIR = os.path.join(os.path.dirname(__file__), "nltk_data")
+nltk.data.path.insert(0, NLTK_DATA_DIR)
 
 app = Flask(__name__)
 CORS(app)
