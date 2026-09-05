@@ -151,17 +151,20 @@ async function analyzeText() {
   setLoading(true);
 
   try {
-    const response = await fetch("http://127.0.0.1:5000/analyze", {
-      method: "POST",
+    const response = await fetch(
+      "https://text-readability-analyzer-glmo.onrender.com/analyze",
+      {
+        method: "POST",
 
-      headers: {
-        "Content-Type": "application/json",
+        headers: {
+          "Content-Type": "application/json",
+        },
+
+        body: JSON.stringify({
+          text: text,
+        }),
       },
-
-      body: JSON.stringify({
-        text: text,
-      }),
-    });
+    );
 
     const data = await response.json();
 
