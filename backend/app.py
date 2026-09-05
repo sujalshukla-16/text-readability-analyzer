@@ -100,11 +100,21 @@ def analyze_text(text):
 
     return sentences, words, total_syllables
 
+@app.route("/healthz", methods=["GET"])
+def health_check():
+    return jsonify({
+        "status": "healthy"
+    }), 200
 
 @app.route("/analyze", methods=["POST"])
 def analyze():
 
-    data = request.get_json()
+    data = request.get_json(silent=True)
+
+    if not data:
+        return jsonify({
+            "error": "Invalid request."
+        }), 400
 
     text = data.get("text", "").strip()
 
