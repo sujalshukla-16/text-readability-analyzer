@@ -2,6 +2,8 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import nltk
 import os
+from wordfreq import zipf_frequency
+from nltk.corpus import words
 
 NLTK_DATA_DIR = os.path.join(os.path.dirname(__file__), "nltk_data")
 nltk.data.path.insert(0, NLTK_DATA_DIR)
@@ -104,6 +106,44 @@ def analyze_text(text):
 
     return sentences, words, total_syllables
 
+def is_meaningful_text(text):
+    tokens = nltk.word_tokenize(text)
+
+    words_in_text = [
+        word.lower()
+        for word in tokens
+        if word.isalpha()
+    ]
+
+    if not words_in_text:
+        return False
+
+    english_words = set(word.lower() for word in words.words())
+
+    recognizable_words = 0
+
+    for word in words_in_text:
+
+        # Standard English vocabulary
+        if word in english_words:
+            recognizable_words += 1
+            continue
+
+        # Allow common technical/proper words that may not
+        # appear in the standard NLTK English word list.
+        if zipf_frequency(word, "en") >= 3.5:
+            recognizable_words += 1
+
+    recognizable_ratio = recognizable_words / len(words_in_text)
+
+    # A single word must be recognizable.
+    if len(words_in_text) == 1:
+        return recognizable_words == 1
+
+    # For longer text, at least half of the words
+    # should resemble recognizable vocabulary.
+    return recognizable_ratio >= 0.5
+
 @app.route("/healthz", methods=["GET"])
 def health_check():
     return jsonify({
@@ -125,6 +165,11 @@ def analyze():
     if not text:
         return jsonify({
             "error": "Please enter some text."
+        }), 400
+
+    if not is_meaningful_text(text):
+        return jsonify({
+            "error": "The entered text does not appear to be meaningful natural-language text. Please enter a sentence or paragraph."
         }), 400
 
     sentences, words, total_syllables = analyze_text(text)
