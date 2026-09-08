@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import nltk
 import os
+import re
 from wordfreq import zipf_frequency
 from nltk.corpus import words
 
@@ -107,7 +108,7 @@ def analyze_text(text):
     return sentences, words, total_syllables
 
 def is_meaningful_text(text):
-    tokens = nltk.word_tokenize(text)
+    tokens = re.findall(r"[A-Za-z]+(?:'[A-Za-z]+)?", text.lower())
 
     words_in_text = [
         word.lower()
