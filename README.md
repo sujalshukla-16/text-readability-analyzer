@@ -1,4 +1,4 @@
-# Text Readability Analyzer
+# Text Readability Analyzer demo link: https://text-readability-analyzer.netlify.app/
 
 A web-based text readability analysis tool that evaluates the difficulty of written content using multiple established readability metrics and combines their classifications to produce an overall readability result.
 
@@ -35,6 +35,28 @@ The classifications from the three readability metrics are combined using a simp
 - Flask-based backend API
 - Interactive frontend using JavaScript
 
+🧠 Readability Metrics
+1. Flesch Reading Ease
+
+Measures how easy a text is to read.
+
+A higher score generally indicates easier text.
+
+The calculation considers:
+-Average sentence length
+-Average number of syllables per word
+
+2. Flesch-Kincaid Grade Level
+
+Estimates the U.S. school grade level required to understand the text.
+A higher score indicates more complex text.
+
+3. Coleman-Liau Index
+
+Estimates the required grade level using:
+-Average number of letters per 100 words
+-Average number of sentences per 100 words
+
 ## How It Works
 
 The application follows this process:
@@ -60,3 +82,21 @@ Final readability result returned
        ↓
 Results displayed on the frontend
 ```
+🛠️ Tech Stack
+**Frontend**
+-HTML5
+-CSS3
+-JavaScript
+-Fetch API
+
+**Backend**
+-Python
+-Flask
+-Flask-CORS
+-NLTK
+-wordfreq
+
+**Deployment**
+-Frontend: Netlify
+-Backend: Render
+-Version Control: Git & GitHub
